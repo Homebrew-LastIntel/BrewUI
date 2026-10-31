@@ -1,3 +1,57 @@
+# Homebrew-LastIntel / BrewUI
+
+Unofficial fork of [Homebrew/BrewUI](https://github.com/Homebrew/BrewUI). Not affiliated with or endorsed by Homebrew. This fork is still **AGPL-3.0**. If you distribute a built app, you distribute the source under that license. The copyright in the upstream files stays with the BrewUI authors.
+
+The screenshot and the sections below the line are upstream's. `brew install --cask homebrew-app` installs upstream's cask, not a build of this fork.
+
+## Goals
+
+Ship the official Homebrew Mac app as a build that runs on the Intel Mac you already have.
+
+- Forked from upstream `main` at `587fcb808c6e45b11d5d25487239741f0f24bb7e` (2026-10-30).
+- The Xcode project does not exclude `x86_64`. On an Intel Mac running macOS 26, Debug follows the host. Release lists `arm64` and `x86_64`.
+- The app talks to the `brew` command and to Homebrew's public JSON API. Install [Homebrew-LastIntel/brew](https://github.com/Homebrew-LastIntel/brew) first, at `/usr/local`. Without a `brew` binary the interface has nothing to call.
+- macOS Tahoe 26 is the last macOS that runs on Intel. This app's deployment target is macOS 26.2, which this line satisfies. It does not run on macOS 27 on Intel, because that OS does not boot here.
+- We do not change the license, rehost cask binaries, or hide what `brew` is doing.
+
+The client goals, the 2026-09-01 Intel baseline, and why upstream stopped Intel bottles are written in the [brew fork README](https://github.com/Homebrew-LastIntel/brew).
+
+## Build on this Mac
+
+You need Xcode 26 or newer, opened once so the license is accepted. The Command Line Tools are not enough to build the app.
+
+```bash
+git clone https://github.com/Homebrew-LastIntel/BrewUI.git
+cd BrewUI
+xcodebuild -scheme Brew -configuration Debug -destination 'platform=macOS,arch=x86_64' build
+```
+
+The product is under `~/Library/Developer/Xcode/DerivedData/`. Confirm the executable with:
+
+```bash
+file path/to/BrewUI.app/Contents/MacOS/BrewUI
+```
+
+The Mach-O line should say `x86_64`. Do not archive, sign for distribution, or notarize from these instructions. A local Debug build is for this machine.
+
+## Run
+
+Put `brew` on your `PATH` (`/usr/local/bin/brew` for this fork). Launch the `.app`. Packages you install from the app are installed by that `brew`. Trust a third-party tap only when you mean to. The app does not turn off the sandbox, bottle attestations, or tap trust.
+
+## Stay current
+
+```bash
+git remote add upstream https://github.com/Homebrew/BrewUI.git
+git fetch upstream
+git merge upstream/main
+```
+
+Keep the AGPL-3.0 license file. If an upstream change sets `EXCLUDED_ARCHS` to drop `x86_64`, put `x86_64` back when the code still compiles for this Mac. If it requires a macOS 27 SDK, stop and record the commit.
+
+---
+
+The upstream README follows.
+
 # 🧑‍💻 BrewUI
 
 <img width="1336" height="844" alt="BrewUI user interface" src="https://github.com/user-attachments/assets/3969e6b2-3054-4127-be5c-847aa1d98c01" />
