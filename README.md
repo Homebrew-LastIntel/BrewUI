@@ -1,3 +1,5 @@
+This fork is unofficial, not affiliated with or endorsed by Homebrew, and remains AGPL-3.0.
+
 # 🧑‍💻 BrewUI
 
 <img width="1336" height="844" alt="BrewUI user interface" src="https://github.com/user-attachments/assets/3969e6b2-3054-4127-be5c-847aa1d98c01" />
